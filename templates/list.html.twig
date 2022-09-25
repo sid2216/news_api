@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+  {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Picture</th>
+    <th>Description</th>
+    <th>Published date</th>
+    <th>Action</th>
+    
+  </tr>
+  
+  {% for n in paginator %}
+  <tr>
+    <td>{{n.getTitle}}</td>
+    <td>{{n.getPicture}}</td>
+    <td>{{n.getDescription}}</td>
+    <td>{{n.getCreatedAt.format('d/m/Y')}}</td>
+    <td><button id="newsd" value="{{n.getId}}">&ShortUpArrow;</button></td>
+    
+
+  </tr>
+  {% endfor %}
+  
+</table>
+
+
+
+</body>
+</html>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#newsd').on('click',function(){
+		var news = $(this).val();
+		var path = window.location.origin;
+		// console.log(path);
+		// return false;
+    $.ajax({
+  url: path+"/news/public/delete_news",
+  type:"post",
+  data: {news : news},
+  success: function(html){
+  	location.reload();
+    
+  }
+});
+});
+  
+});
+</script>
